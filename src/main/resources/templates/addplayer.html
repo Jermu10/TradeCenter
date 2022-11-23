@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Add new player</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+	<h2>Add new player</h2>
+	<div>
+	<form th:object="${player}" th:action="@{saveplayer}" action="#" method="post">
+		<label for="title">Name</label>
+		<input type="text" id="name" th:field="*{name}" class="form-control" />
+		
+		<label for="author">Country</label>
+		<input type="text" id="country" th:field="*{country}" class="form-control" />
+		
+
+		<select id="hand" th:field="*{hand}" class="form-control">
+			<option value="Left"> Left </option>
+			<option value="Right"> Right </option>
+		</select>
+		
+		<label for="title">Salary</label>
+		<input type="number" id="salary" th:field="*{salary}" class="form-control" />
+		
+		
+		<select id="team" th:field="${player.team}" class="form-control">
+			<option th:each="team: ${teams}" th:value="${team.teamId}" th:text="${team.teamName}"></option>
+		</select>
+		
+		
+		<input type="submit" class="btn btn-primary" value="Save">
+		
+	</form>
+	</div>
+</div>
+</body>
+</html>

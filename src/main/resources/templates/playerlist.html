@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Player list</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+<body>
+	 
+<nav th:fragment="navbar" class="navbar navbar-expand-md bg-dark navbar-dark">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand">Trade Center</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a class="nav-link" th:href="@{/playerlist}">Players</a></li>
+
+            <li><a class="nav-link" th:href="@{/teamlist}">Teams</a></li>
+
+            <li><a class="nav-link" th:href="@{/tradelist}">Trades</a></li>   
+        </ul>
+		<form th:action="@{/logout}" method="post">
+			<input type="submit" value="Sign Out" class =" btn btn-sm btn-danger" />
+		</form>
+	
+    </div>    
+</nav>
+	
+		<h1 th:inline="text">Welcome to Trade Center [[${#httpServletRequest.remoteUser}]]!</h1>
+	
+	<table>
+		<tbody>
+			<tr>
+				<th>Name</th>
+				<th>Country</th>
+				<th>Hand</th>
+				<th>Salary</th>
+				<th>Team</th>
+				<th>Edit</th>
+				<th sec:authorize="hasAuthority('ADMIN')">Delete</th>	
+			</tr>
+			<tr th:each = "player: ${players}">
+				<td th:text=${player.name} />
+				<td th:text=${player.country} />
+				<td th:text=${player.hand} />
+				<td th:text=${player.salary} />
+				<td><a th:href="@{/playersByTeam/{team}(team=${player.team.teamName})}"  th:text="${player.team.teamName}"></a></td>
+				 <!-- <td th:text="${player.team} ? ${player.team.teamName} : ''"></td> -->
+				<td><a class="btn btn-sm btn-success" th:href="@{/edit/{id}(id=${player.id})}">Edit</a></td>
+				<td sec:authorize="hasAuthority('ADMIN')"><a class="btn btn-sm btn-danger" th:href="@{/delete/{id}(id=${player.id})}">Delete</a></td>
+		</tbody>
+	</table>
+	
+	<a href="/addplayer" class="btn btn-primary">Add player</a>
+
+	
+
+</body>
+</html>
